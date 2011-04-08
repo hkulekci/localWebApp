@@ -1,0 +1,8 @@
+You can load your web application in local computer. 
+In this project, the loader run apache, mysql and http://localhost page with prism.
+
+
+
+http://prism.mozillalabs.com is used in project but it is not hosted now in reposity.
+http://www.apachefriends.org/en/xampp.html is used to try the project.
+
