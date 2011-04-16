@@ -11,37 +11,62 @@ using System.IO;
 
 namespace loader
 {
+    /// <summary>
+    /// To load your web application in local computer
+    /// </summary>
+    /// <remarks>
+    /// In this project, the loader run apache, mysql and http://localhost page with prism.
+    ///  
+    /// http://prism.mozillalabs.com is used in project but it is not hosted now in reposity.
+    /// http://www.apachefriends.org/en/xampp.html is used to try the project. 
+    /// 
+    /// </remarks>
     public partial class Loader : Form
     {
+        /// <summary>
+        /// This process to start apache, mysql, prism application
+        /// </summary>
         Process apache = new Process();
         Process mysql = new Process();
         Process prism = new Process();
         static string pathh = Application.StartupPath;
 		
-		//Apache Settings
+		/// <summary>
+        /// Apache application Settings to start and end
+		/// </summary>
+
         static string apachePath = pathh + "\\apache\\";
 		string apacheClosePath = apachePath + "bin\\pv.exe";
 		string apacheCloseParameters = "-f -k httpd.exe -q";
 		
-		// Mysql Settings
+		/// <summary>
+        /// Mysql application Settings to start and end
+		/// </summary>
+ 
 		string mysqlPath = pathh + "\\mysql\\";
         string mysql_parameters = "--defaults-file=mysql\\bin\\my.ini --standalone --console";
 		string mysqlClosePath = apachePath + "bin\\pv.exe";
 		string mysqlCloseParameters = "-f -k mysqld.exe -q";
-		
-		//Prism Settings
+
+        /// <summary>
+        /// Prism application Settings to start and end
+        /// </summary>
+        /// <remarks>
+        /// In this part, you must create a configure file for prism.
+		/// Can you get help this page => http://prism.mozillalabs.com/
+        /// </remarks>
 		string prismPath = pathh + "\\loader\\prism\\prism.exe";
 		string prism_parameters = "-override \"" + pathh + "\\loader\\WebApps\\loader@prism.app\\override.ini\" -webapp loader@prism.app";
 		string prism_working_directory = pathh + "\\loader\\WebApps";
-		/*
-			In this part, you must create a configure file for prism.
-			Can you get help this page => http://prism.mozillalabs.com/
-		*/
 
-		// Logs Settings
+		/// <summary>
+        /// Logs Settings
+		/// </summary>
 		string log_directory = pathh + "\\loader\\hlogs";
 
-
+        /// <summary>
+        /// Class COnstructor
+        /// </summary>
         public Loader()
         {
             InitializeComponent();
@@ -54,37 +79,53 @@ namespace loader
         /// <param name="filePath">Path of the text file.</param>
         /// <param name="searchText">Text to search for.</param>
         /// <param name="replaceText">Text to replace the search text.</param>
-        static public void replace_from_file(string filePath, string searchText, string replaceText)
+        /// 
+        /// <returns>
+        /// if change somethins return true else return false
+        /// </returns>
+        static public bool replace_from_file(string filePath, string searchText, string replaceText)
         {
             StreamReader reader = new StreamReader(filePath);
             string content = reader.ReadToEnd();
             reader.Close();
-
+            string content_old = content;
             content = Regex.Replace(content, searchText, replaceText);
+            if (content_old == content) {
+                return false;
+            }
 
             StreamWriter writer = new StreamWriter(filePath);
             writer.Write(content);
             writer.Close();
+            return true;
         }
+        
         /// <summary>
         /// Show message box for logs
         /// </summary>
+        /// <param name="s">s is messaged with messagebox</param>
         private void messaged( string s ) {
             MessageBox.Show( s );
             logged(s);
         }
+
         /// <summary>
         /// Save logs to listbox
         /// </summary>
+        /// <seealso cref="listbox"/>
+        /// <param name="s">s is added to listbox</param>
         private void logged( string s ) {
-			// logging operation in a listbox 
-			// Maybe this part can be change
+			// TODO: logging operation in a listbox 
+            // TODO: Maybe this part can be change
             log.Items.Add(DateTime.Now.ToString() + " | " + s);
         }
 
         /// <summary>
         /// Save logs to log file
         /// </summary>
+        /// <seealso cref="messaged(string)">
+        /// messaged method is used in.
+        /// </seealso>
         private void save_log() {
             if (!Directory.Exists(log_directory))
                 Directory.CreateDirectory(log_directory);
@@ -203,6 +244,9 @@ namespace loader
 
         }
 
+        /// <summary>
+        /// Close all application which were opened.
+        /// </summary>
         private void close_form()
         {
 
