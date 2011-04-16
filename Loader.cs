@@ -30,39 +30,39 @@ namespace loader
         Process mysql = new Process();
         Process prism = new Process();
         static string pathh = Application.StartupPath;
-		
-		/// <summary>
+
+        /// <summary>
         /// Apache application Settings to start and end
-		/// </summary>
+        /// </summary>
 
         static string apachePath = pathh + "\\apache\\";
-		string apacheClosePath = apachePath + "bin\\pv.exe";
-		string apacheCloseParameters = "-f -k httpd.exe -q";
-		
-		/// <summary>
+        string apacheClosePath = apachePath + "bin\\pv.exe";
+        string apacheCloseParameters = "-f -k httpd.exe -q";
+
+        /// <summary>
         /// Mysql application Settings to start and end
-		/// </summary>
- 
-		string mysqlPath = pathh + "\\mysql\\";
+        /// </summary>
+
+        string mysqlPath = pathh + "\\mysql\\";
         string mysql_parameters = "--defaults-file=mysql\\bin\\my.ini --standalone --console";
-		string mysqlClosePath = apachePath + "bin\\pv.exe";
-		string mysqlCloseParameters = "-f -k mysqld.exe -q";
+        string mysqlClosePath = apachePath + "bin\\pv.exe";
+        string mysqlCloseParameters = "-f -k mysqld.exe -q";
 
         /// <summary>
         /// Prism application Settings to start and end
         /// </summary>
         /// <remarks>
         /// In this part, you must create a configure file for prism.
-		/// Can you get help this page => http://prism.mozillalabs.com/
+        /// Can you get help this page => http://prism.mozillalabs.com/
         /// </remarks>
-		string prismPath = pathh + "\\loader\\prism\\prism.exe";
-		string prism_parameters = "-override \"" + pathh + "\\loader\\WebApps\\loader@prism.app\\override.ini\" -webapp loader@prism.app";
-		string prism_working_directory = pathh + "\\loader\\WebApps";
+        string prismPath = pathh + "\\loader\\prism\\prism.exe";
+        string prism_parameters = "-override \"" + pathh + "\\loader\\WebApps\\loader@prism.app\\override.ini\" -webapp loader@prism.app";
+        string prism_working_directory = pathh + "\\loader\\WebApps";
 
-		/// <summary>
-		/// Logs Settings
-		/// </summary>
-		string log_directory = pathh + "\\loader\\hlogs";
+        /// <summary>
+        /// Logs Settings
+        /// </summary>
+        string log_directory = pathh + "\\loader\\hlogs";
 
         /// <summary>
         /// Class COnstructor
@@ -115,8 +115,8 @@ namespace loader
         /// <seealso cref="listbox"/>
         /// <param name="s">s is added to listbox</param>
         private void logged( string s ) {
-			// TODO: logging operation in a listbox 
-			// TODO: Maybe this part can be change
+            // TODO: logging operation in a listbox 
+            // TODO: Maybe this part can be change
             log.Items.Add(DateTime.Now.ToString() + " | " + s);
         }
 
@@ -331,8 +331,8 @@ namespace loader
 
         private void Loader_Load(object sender, EventArgs e)
         {
-			//This part hide this application 
-			//and prism is focus spontaneously
+            //This part hide this application 
+            //and prism is focus spontaneously
             this.Hide();
         }
     }
