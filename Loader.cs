@@ -60,7 +60,7 @@ namespace loader
 		string prism_working_directory = pathh + "\\loader\\WebApps";
 
 		/// <summary>
-        /// Logs Settings
+		/// Logs Settings
 		/// </summary>
 		string log_directory = pathh + "\\loader\\hlogs";
 
@@ -116,7 +116,7 @@ namespace loader
         /// <param name="s">s is added to listbox</param>
         private void logged( string s ) {
 			// TODO: logging operation in a listbox 
-            // TODO: Maybe this part can be change
+			// TODO: Maybe this part can be change
             log.Items.Add(DateTime.Now.ToString() + " | " + s);
         }
 
