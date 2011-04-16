@@ -16,10 +16,10 @@ namespace loader
         Process apache = new Process();
         Process mysql = new Process();
         Process prism = new Process();
-        string pathh = Application.StartupPath;
+        static string pathh = Application.StartupPath;
 		
 		//Apache Settings
-        string apachePath = pathh + "\\apache\\";
+        static string apachePath = pathh + "\\apache\\";
 		string apacheClosePath = apachePath + "bin\\pv.exe";
 		string apacheCloseParameters = "-f -k httpd.exe -q";
 		
@@ -47,17 +47,44 @@ namespace loader
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// Replaces text in a file.
+        /// </summary>
+        /// <param name="filePath">Path of the text file.</param>
+        /// <param name="searchText">Text to search for.</param>
+        /// <param name="replaceText">Text to replace the search text.</param>
+        static public void replace_from_file(string filePath, string searchText, string replaceText)
+        {
+            StreamReader reader = new StreamReader(filePath);
+            string content = reader.ReadToEnd();
+            reader.Close();
+
+            content = Regex.Replace(content, searchText, replaceText);
+
+            StreamWriter writer = new StreamWriter(filePath);
+            writer.Write(content);
+            writer.Close();
+        }
+        /// <summary>
+        /// Show message box for logs
+        /// </summary>
         private void messaged( string s ) {
             MessageBox.Show( s );
             logged(s);
         }
-
+        /// <summary>
+        /// Save logs to listbox
+        /// </summary>
         private void logged( string s ) {
 			// logging operation in a listbox 
 			// Maybe this part can be change
             log.Items.Add(DateTime.Now.ToString() + " | " + s);
         }
 
+        /// <summary>
+        /// Save logs to log file
+        /// </summary>
         private void save_log() {
             if (!Directory.Exists(log_directory))
                 Directory.CreateDirectory(log_directory);
@@ -80,7 +107,19 @@ namespace loader
         {
             this.Hide();
 
-            //Apache Start
+            #region replace_part
+            // I dont run this program with this region
+            if (File.Exists(apachePath + "bin\\httpd.conf"))
+                replace_from_file(apachePath + "bin\\httpd.conf", "/xampp/", pathh + "/");
+            else
+                logged("Program error code : 1005a - Apache Path not found!");
+            if (File.Exists(mysqlPath + "bin\\mysql.ini"))
+                replace_from_file(mysqlPath + "bin\\mysql.ini", "/xampp/", pathh.Replace("\\", "/") + "/");
+            else
+                logged("Program error code : 1005b - Mysql Path not found!");
+            #endregion
+
+            #region ApacheStart
             if (File.Exists(apachePath + "bin\\httpd.exe"))
             {
                 try
@@ -101,8 +140,9 @@ namespace loader
                 save_log();
             }
 
-            
+            #endregion
 
+            #region MysqlStart
             if (File.Exists(mysqlPath + "bin\\mysqld.exe"))
             {
                 try
@@ -124,11 +164,9 @@ namespace loader
                 messaged("Program error code : 1001b");
                 save_log();
             }
+            #endregion
 
-            
-            //messaged(prism_parameters);
-            
-
+            #region PrismStart
             if (File.Exists(prismPath))
             {
                 try
@@ -155,6 +193,7 @@ namespace loader
                 messaged("Program error code : 1002b");
                 save_log();
             }
+            #endregion
 
             prism.Close();
             logged("Service-3 is ended");
@@ -167,8 +206,8 @@ namespace loader
         private void close_form()
         {
 
-            
-            
+
+            #region ApacheClosePart
             Process apacheClose = new Process();
             if (File.Exists(apacheClosePath))
             {
@@ -196,7 +235,9 @@ namespace loader
                 messaged("Program error code : 1003b");
                 save_log();
             }
+            #endregion
 
+            #region MysqlClosePart
             Process mysqlClose = new Process();
             if (File.Exists(mysqlClosePath))
             {
@@ -229,6 +270,7 @@ namespace loader
                 messaged("Program error code : 1004b");
                 save_log();
             }
+            #endregion
 
             apacheClose.Close();
             mysqlClose.Close();
